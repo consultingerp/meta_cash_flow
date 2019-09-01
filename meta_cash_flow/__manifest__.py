@@ -19,7 +19,7 @@
         'views/account_payment.xml',
     ],
     'icon': "/meta_cash_flow/static/description/icon.png",
-    "images": ["/meta_cash_flow/static/description/banner.png"],
+    "images": ["static/description/banner.png"],
     "installable": True,
     "application": True,
     "auto_install": False,
