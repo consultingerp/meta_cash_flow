@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report 
+            id="report_cash_flow"
+            model="cash.flow.data"
+            string="Cash Flow Report"
+            report_type="qweb-html"
+            name="meta_cash_flow.cash_flow_report_document"
+            file="meta_cash_flow.cash_flow_report_document"
+            attachment_use="False"
+        />
+
+        <template id="cash_flow_report_document">
+            <t t-call="report.html_container">
+                <t t-call="custom_report.custom_external_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="text-center" style="padding-bottom:50px;">
+                                <h3>Cash Flow Statement</h3>
+                                <h5><span t-esc="docs[0].start_date"/> To <span t-esc="docs[0].end_date"/></h5>
+                            </div>
+                        </div>
+                        <t t-set="opening_closing" t-value="docs[0].calculate_opening_and_closing()"/>
+
+                        <h3>Opening Balance</h3>
+                        <table class="table table-condensed">
+                            <thead>
+                                <!-- <tr>
+                                    <th ><h3><b>Opening Balance</b></h3></th>
+                                    <th style="text-align:right;"><h3><b><t t-esc="opening_closing['opening_total']"   t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></b></h3></th>
+                                </tr> -->
+                                <tr style="background:#999999">
+                                    <th >Bank and Cash Accounts</th>
+                                    <th style="text-align:right;">Balance</th>
+                                </tr>
+                            </thead>
+                                <t t-foreach="opening_closing['opening']" t-as="opening">
+                                    <t t-if="opening['code']=='Total'">
+                                        <tr>
+                                            <td><b><t t-esc="opening['code']"/></b></td>
+                                            <td align='right'><b><t t-esc="opening['balance']"  t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></b></td>
+                                        </tr>
+                                    </t>
+                                    <t t-else="">
+                                        <tr>
+                                            <td><t t-esc="opening['code']"/>-<t t-esc="opening['name']"/></td>
+                                            <td align='right'><t t-esc="opening['balance']"  t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <br/>
+                        <t t-set="total_cash_flow" t-value="0"/>
+                        <h3>Cash Flow</h3>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr style="background:#999999">
+                                    <th >Groups and Accounts</th>
+                                    <th style="text-align:right;">Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="docs" t-as="line">
+
+                                    <t t-set="layer" t-value="line.get_value(line.layer)"/>
+                                    <t t-if="layer == 1">
+                                        <tr style="background:#f2f2f2">
+                                            <td><b><t t-esc="line.label"/></b></td>
+                                            <td align='right'><b><t t-esc="line.balance" t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></b></td>
+                                        </tr>
+                                        <t t-set='total_cash_flow' t-value='total_cash_flow + line.balance'/>
+                                    </t>
+                                    <t t-if="layer == 2">
+                                        <tr style=";background:#f2f2f2;">
+                                            <td style="padding-left:50px;"><b><t t-esc="line.label"/></b></td>
+                                            <td align='right'><b><t t-esc="line.balance" t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></b></td>
+                                        </tr>
+                                    </t>
+                                    <t t-if="layer == 3">
+                                        <tr>
+                                            <td style="padding-left:100px;"><t t-esc="line.label"/></td>
+                                            <td align='right'><t t-esc="line.balance" t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></td>
+                                        </tr>
+                                    </t>
+                                    
+                                </t>
+                                <tr>
+                                    <td><br/></td>
+                                    <td><br/></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Total</b></td>
+                                    <td align='right'><b><t t-esc="total_cash_flow"   t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></b></td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                        <br/>
+                        <br/>
+                        <h3>Closing Balance</h3>
+                        <table class="table table-condensed">
+                            <thead>
+                                <!-- <tr>
+                                    <th ><h3><b>Closing Balance</b></h3></th>
+                                    <th style="text-align:right;"><h3><b><t t-esc="opening_closing['closing_total']"   t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></b></h3></th>
+                                </tr> -->
+                                <tr style="background:#999999">
+                                    <th >Bank and Cash Accounts</th>
+                                    <th style="text-align:right;">Balance</th>
+                                </tr>
+                            </thead>
+                                <t t-foreach="opening_closing['closing']" t-as="closing">
+                                    <t t-if="closing['code']=='Total'">
+                                        <tr>
+                                            <td><b><t t-esc="closing['code']"/></b></td>
+                                            <td align='right'><b><t t-esc="closing['balance']"  t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></b></td>
+                                        </tr>
+                                    </t>
+                                    <t t-else="">
+                                        <tr>
+                                            <td><t t-esc="closing['code']"/>-<t t-esc="closing['name']"/></td>
+                                            <td align='right'><t t-esc="closing['balance']"  t-options="{'widget': 'monetary', 'display_currency': docs[0].currency_id}"/></td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </template>
+        
+    </data>
+</odoo>
