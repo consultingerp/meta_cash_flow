@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Form view -->
+        <record id="view_cash_flow_wizard_form" model="ir.ui.view">
+            <field name="name">cash.flow.wizard.form</field>
+            <field name="model">cash.flow.wizard</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Cash Flow Wizard">
+                        <group>
+                            <group>
+                                <field name="from_date"/>
+                                <field name="entry_post_status" widget="radio"/>
+                            </group>
+                            <group>
+                                <field name='to_date'/>
+                            </group>
+                        </group>
+                    <footer>
+                        <button string="Execute" type="object" name="done" class="oe_highlight" />
+                        <button string="Close" class="oe_link oe_highlight"  special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        
+        <!-- This action window for configuration -->
+
+        <record model="ir.actions.act_window" id="action_view_cash_flow_wizard">
+            <field name="name">Cash Flow</field>
+            <field name="res_model">cash.flow.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create new Configuration
+                </p>
+            </field>
+        </record>
+        <menuitem id='menu_meta_cash_flow_wizard' name='Cash Flow Statement' parent="account.menu_finance_reports" action="action_view_cash_flow_wizard"/>
+        
+    </data>
+</odoo>

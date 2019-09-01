@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- tree view -->
+        <record id="view_cash_flow_data_tree" model="ir.ui.view">
+            <field name="name">cash.flow.data.tree</field>
+            <field name="model">cash.flow.data</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Cash Flow Data">
+                    <!-- <field name="account_id" /> -->
+                    <!-- <field name="ac_type" /> -->
+                    <field name='label'/>
+                    <field name="debit" />
+                    <field name="credit" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_cash_flow_data_filter" model="ir.ui.view">
+            <field name="name">cash.flow.data.search</field>
+            <field name="model">cash.flow.data</field>
+            <field name="arch" type="xml">
+                <search string="Search Location">
+                    <filter name="cash_flow" string="Cash Flow" context="{'group_by':('account_id','ac_type')}"/>
+                </search>
+            </field>
+        </record>
+
+       
+      
+        
+    </data>
+</odoo>
